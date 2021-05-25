@@ -1,0 +1,16 @@
+<template>
+  <div id="app">
+  <navbar/>
+  <b-container>
+    <router-view/>
+ </b-container>
+  </div>
+</template>
+
+<script>
+import Navbar from '@/view/Navbar'
+export default {
+  components: {Navbar},
+  name: 'App'
+}
+</script>

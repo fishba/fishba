@@ -1,0 +1,171 @@
+<!--index.html-->
+
+<!--Embed the header.html template at this location-->
+{{ template "header.html" .}}
+
+<!--Loop over the `payload` variable, which is the list of articles-->
+<div>
+    <table id="table" class="table table-striped table-bordered table-hover">
+    </table>
+</div>
+<!--Embed the footer.html template at this location-->
+{{ template "footer.html" .}}
+
+ <script>
+ $(function () {
+     initTable();
+ })
+ //初始化表格
+ function initTable() {
+
+    //先销毁表格
+     $('#table').bootstrapTable('destroy');
+     $('#table').bootstrapTable({
+    method: "get",
+    url: "job/",//请求路径
+    striped: true,//表格显示条纹
+    pagination: true,//是否显示分页
+    pageSize: 1,
+    pageNumber: 1,
+    pageList: [5, 10, 15, 20, 25],
+    showColumns: true,
+    showRefresh: true,//是否显示刷新按钮
+    sidePagination: "server",//表示从服务端获取数据 --必须有
+    queryParamsType: "undefined",//定义参数类型
+    clickToSelect: true,
+    queryParams: function (params) {
+        var param = {
+            limit: params.limit,   //页面大小
+            offset: params.offset,  //页码
+        };
+
+        return param;
+
+    },
+     msg: [{
+        aligin: 'center',
+        checkbox: true,//显示复选框
+    },
+{
+        field: 'Id',
+            title: '#',
+            align: 'center',
+            visible: true,
+        },
+    {
+        field: 'Date',
+        title: '创建时间',
+        //获取日期列的值进行转换
+        formatter: function (value, row, index) {
+            return changeDateFormat(value)
+        },
+        align: 'center',
+    },
+{
+        field: 'ProblemType',
+            title: '问题类型',
+            align: 'center',
+        },
+{
+        field: 'PartsName',
+            title: '配件名称',
+            align: 'center',
+        },
+    {
+        field: 'ProblemDescription',
+            title: '问题描述',
+            align: 'center',
+        },
+    {
+        field: 'Location',
+            title: '位置',
+            align: 'center',
+        },
+    {
+        field: 'UserName',
+        title: '处理人',
+        align: 'center',
+    },
+    {
+        field: 'CenterName',
+        title: '所在中心',
+        align: 'center',
+    },
+    {
+        field: 'LastDate',
+            title: '最后更新时间',
+            //获取日期列的值进行转换
+        formatter: function (value, row, index) {
+                return changeDateFormat(value)
+            },
+        align: 'center',
+    },
+{
+        field: 'isAble',
+            title: '是否可用',
+            formatter : function (value, row, index) {
+                if (row['isAble'] === 1) {
+                        return '正常';
+                  }
+              if (row['isAble'] === 2) {
+                      return '禁用';
+                   }
+                   return value;
+               },
+           align: 'center',
+
+       },
+   {
+           field: 'isLine',
+            title: '是否在线',
+            formatter: function (value, row, index) {
+                if (row['isLine'] === 1) {
+                        return '在线';
+                    }
+                if (row['isLine'] === 2) {
+                        return '下线';
+                    }
+                return value;
+                       },
+                   align: 'center',
+                   },
+           {
+                   field: 'remark',
+                       title: '备注信息',
+                       align: 'center',
+                   }],
+              onLoadSuccess: function (data) {
+                      console.log(data);
+
+                  },
+              onLoadError: function (data) {
+                      console.log(data);
+                  }
+          })
+
+          $("#add").click(function ()
+          {
+                  $("#myModal").modal('show');
+              })
+    $("#edit").click(function () {
+            $("#myModal").modal('show');
+        })
+    $("#close").click(function () {
+            $("#myModal").modal('hide');
+        });
+     }
+
+ //转换日期格式(时间戳转换为datetime格式)
+ function changeDateFormat(cellval) {
+  var dateVal = cellval + "";
+  if (cellval != null) {
+  var date = new Date(parseInt(dateVal.replace("/Date(", "").replace(")/", ""), 10));
+  var month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+  var currentDate = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+  var hours = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+  var minutes = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+  var seconds = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+  return date.getFullYear() + "-" + month + "-" + currentDate + " " + hours + ":" + minutes + ":" + seconds;
+         }
+ }
+ </script>

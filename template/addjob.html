@@ -1,0 +1,55 @@
+<!--register.html-->
+
+<!--Embed the header.html template at this location-->
+{{ template "header.html" .}}
+
+<h1>添加日志</h1>
+
+<div class="panel panel-default col-sm-6">
+    <div class="panel-body">
+        <!--If there's an error, display the error-->
+        {{ if .ErrorTitle}}
+            <p class="bg-danger">
+                {{.ErrorTitle}}: {{.ErrorMessage}}
+            </p>
+        {{end}}
+        <!--Create a form that POSTs to the `/u/register` route-->
+        <form class="form" action="/job/add" method="POST">
+            <div class="form-group">
+                <label for="problemtype">问题类型</label>
+                <input type="text" class="form-control" id="problemtype" name="problemtype" placeholder="Problemtype">
+            </div>
+            <div class="form-group">
+                <label for="partsname">配件名称</label>
+                <input type="text" name="partsname" class="form-control" id="partsname" placeholder="Partsname">
+            </div>
+
+            <div class="form-group">
+                <label for="description">问题描述</label>
+                <textarea name="description" rows="5" class="form-control" id="description" placeholder="把问题写完整."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="location">位置</label>
+                <input type="text" name="location" class="form-control" id="location" placeholder="Location">
+            </div>
+
+            <div class="form-group">
+                <label for="username">处理人</label>
+                <input type="text" name="username" class="form-control" id="username" placeholder="Username">
+            </div>
+
+            <div class="form-group">
+                <label for="centername">中心名称</label>
+                <input type="text" name="centername" class="form-control" id="centername" placeholder="Centername">
+            </div>
+
+            <button type="submit" class="btn btn-primary">添加日志</button>
+        </form>
+
+    </div>
+</div>
+
+
+<!--Embed the footer.html template at this location-->
+{{ template "footer.html" .}}
